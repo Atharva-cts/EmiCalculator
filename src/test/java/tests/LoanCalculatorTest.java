@@ -56,7 +56,7 @@ public class LoanCalculatorTest {
                 "Slider did not move. aria: %s -> %s, left%%: %s -> %s",
                 ariaBefore, ariaAfter, leftBefore, leftAfter
         ));
-        page.scroll1();
+        page.scroll();
         page.display();
         Thread.sleep(2000);
     }

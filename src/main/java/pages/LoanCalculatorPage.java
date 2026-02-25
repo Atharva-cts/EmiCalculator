@@ -154,7 +154,7 @@ public class LoanCalculatorPage {
         return before != null && after != null && !after.equals(before);
     }
 
-    public void scroll1(){
+    public void scroll(){
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("window.scrollBy(0, 500);");   // scroll down 500px
     }
@@ -175,8 +175,5 @@ public class LoanCalculatorPage {
         System.out.println("TotalAmount "+totalAmountText);
 
     }
-    public void scroll2(){
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("window.scrollBy(0, 550);");   // scroll down 500px
-    }
+
 }
