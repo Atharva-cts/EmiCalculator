@@ -57,6 +57,7 @@ public class LoanCalculatorTest {
                 ariaBefore, ariaAfter, leftBefore, leftAfter
         ));
         page.scroll();
+        page.display();
         Thread.sleep(2000);
     }
 
