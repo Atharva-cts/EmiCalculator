@@ -53,6 +53,10 @@ public class HomeLoanPage {
         element.sendKeys(text);                           // type
     }
 
+    public void scrollDown() {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("window.scrollBy(0, 1700);");
+    }
     // --- Page Actions ---
     public void openHomeLoanCalculator() {
         click(calculatorsDropdown);
