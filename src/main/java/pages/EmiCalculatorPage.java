@@ -7,7 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-public class LoanCalculatorPage {
+public class EmiCalculatorPage {
 
     private final WebDriver driver;
     private final WebDriverWait wait;
@@ -15,18 +15,20 @@ public class LoanCalculatorPage {
     // Locators (adjust if your site differs)
     private final By dropdownToggle = By.id("menu-item-dropdown-2696");
     private final By loanCalculatorLink = By.linkText("Loan Calculator");
+    private final By loanAmountLink=By.xpath("//a[normalize-space()='Loan Amount Calculator']");
     private final By loanAmount=By.id("loanamount");
     private final By loanIntrest=By.id("loanintrest");
     private final By loanTerm=By.id("loanterm");
     private final By loanMonth=By.xpath("//label[normalize-space()='Mo']");
     private final By loanFees=By.id("loanfees");
 
-    private final   By emiAmountSpan        = By.cssSelector("#emiamount p > span");
-    private final   By totalInterestSpan    = By.cssSelector("#emitotalinterest p > span");
-    private final   By totalAmountSpan      = By.cssSelector("#emitotalamount p > span");
+    private final By emiAmountSpan     = By.cssSelector("div[id='loansummary-emi'] p span");
+    private final By  aprSpan = By.cssSelector("div[id='loansummary-apr'] p span");
+    private final By  totalIntrestSpan = By.cssSelector("div[id='loansummary-totalinterest'] p span");
 
+    private final By totalAmountSpan   = By.cssSelector("div[id='loansummary-totalamount'] p");
 
-    public LoanCalculatorPage(WebDriver driver) {
+    public EmiCalculatorPage(WebDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(20)); // simple explicit wait
     }
@@ -42,6 +44,7 @@ public class LoanCalculatorPage {
     public void selectLoanCalculator() {
         openDropdown();
         clickLoanCalculator();
+
     }
     public void setLoanAmount(){
 
@@ -102,7 +105,7 @@ public class LoanCalculatorPage {
 
     //sliderTest
 
-    private final By sliderHandle = By.cssSelector(".ui-slider-handle");
+    private final By sliderHandle =By.cssSelector(".ui-slider-handle");
 
 
 
@@ -157,6 +160,26 @@ public class LoanCalculatorPage {
 
     public void scroll(){
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("window.scrollBy(0, 500);");   // scroll down 500px
+        js.executeScript("window.scrollBy(0, 550);");   // scroll down 500px
+    }
+
+    public void display(){
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(emiAmountSpan));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(aprSpan));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(totalIntrestSpan));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(totalAmountSpan));
+
+// Read text
+        String emiAmountText     = driver.findElement(emiAmountSpan).getText();        // e.g., "8,207"
+        String aprText = driver.findElement(aprSpan).getText();    // e.g., "92,397"
+        String totalInterestText = driver.findElement(totalIntrestSpan).getText();    // e.g., "92,397"
+        String totalAmountText   = driver.findElement(totalAmountSpan).getText();
+        // e.g., "4,92,397"
+        System.out.println("Loan EMI "+emiAmountText);
+        System.out.println("Loan APR "+ aprText);
+        System.out.println("Total Interest "+totalInterestText);
+        System.out.println("TotalAmount "+totalAmountText);
+
     }
 }
