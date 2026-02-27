@@ -1,9 +1,6 @@
 package pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -32,6 +29,7 @@ public class HomeLoanPage {
     private By propertyTaxes    =By.xpath("//input[@id='propertytaxes']");
     private By home_Insurance     =By.xpath("//input[@id='homeinsurance']");
     private By maintenance_Expenses    =By.xpath("//input[@id='maintenanceexpenses']");
+    private By Excel_file   =By.xpath("//a[@title='Download Excel Spreadsheet']");
 
 
 
@@ -53,6 +51,10 @@ public class HomeLoanPage {
         element.sendKeys(text);                           // type
     }
 
+    public void scrollDown() {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("window.scrollBy(0, 2000);");
+    }
     // --- Page Actions ---
     public void openHomeLoanCalculator() {
         click(calculatorsDropdown);
@@ -60,6 +62,11 @@ public class HomeLoanPage {
 
         // Wait for page to load by waiting for home value field
         wait.until(ExpectedConditions.visibilityOfElementLocated(homeValueField));
+    }
+
+    public void Excel_Sheet_click() {
+        click(Excel_file);
+
     }
 
     public void enterHomeValue(String value) {

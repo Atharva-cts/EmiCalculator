@@ -7,7 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-public class EmiCalculatorPage {
+public class LoanTenurePage {
 
     private final WebDriver driver;
     private final WebDriverWait wait;
@@ -15,18 +15,20 @@ public class EmiCalculatorPage {
     // Locators (adjust if your site differs)
     private final By dropdownToggle = By.id("menu-item-dropdown-2696");
     private final By loanCalculatorLink = By.linkText("Loan Calculator");
-    private final By loanAmount=By.id("loanamount");
-    private final By loanIntrest=By.id("loanintrest");
+    private final By loanTenureLink=By.xpath("//a[normalize-space()='Loan Tenure Calculator']");
+    private final By emiAmount=By.xpath("//input[@id='loanemi']");
+    private final By loanIntrest=By.xpath("//input[@id='loaninterest']");
     private final By loanTerm=By.id("loanterm");
-    private final By loanMonth=By.xpath("//label[normalize-space()='Mo']");
     private final By loanFees=By.id("loanfees");
 
-    private final   By emiAmountSpan        = By.cssSelector("#emiamount p > span");
-    private final   By totalInterestSpan    = By.cssSelector("#emitotalinterest p > span");
-    private final   By totalAmountSpan      = By.cssSelector("#emitotalamount p > span");
 
+    private final By tenureSpan     = By.xpath("//div[@id='loansummary-tenure']//p[1]");
+    private final By  aprSpan = By.cssSelector("div[id='loansummary-apr'] p span");
+    private final By  totalIntrestSpan = By.cssSelector("div[id='loansummary-totalinterest'] p span");
 
-    public EmiCalculatorPage(WebDriver driver) {
+    private final By totalAmountSpan   = By.cssSelector("div[id='loansummary-totalamount'] p");
+
+    public LoanTenurePage(WebDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(20)); // simple explicit wait
     }
@@ -38,11 +40,10 @@ public class EmiCalculatorPage {
     public void clickLoanCalculator() {
         wait.until(ExpectedConditions.elementToBeClickable(loanCalculatorLink)).click();
     }
-
     public void selectLoanCalculator() {
         openDropdown();
         clickLoanCalculator();
-
+        wait.until(ExpectedConditions.elementToBeClickable(loanTenureLink)).click();
     }
     public void setLoanAmount(){
 
@@ -55,43 +56,24 @@ public class EmiCalculatorPage {
         loanAmount.sendKeys("15000000");
 
     }
-    public void setLoanIntrest(){
+    public void setEmiAmount(){
+
+        WebElement loanAmount = wait.until(ExpectedConditions.elementToBeClickable(emiAmount));
+
+// Clear and type the value
+
+        loanAmount.click();
+        loanAmount.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
+        loanAmount.sendKeys("15000");
+
+    }
+    public void setLoanIntrest() {
         //driver.findElement(loanAmount).sendKeys("1500000");
 
         WebElement loanInterest = wait.until(
                 ExpectedConditions.elementToBeClickable(By.id("loaninterest"))
         );
-
-// Clear and type 10.75 (or any target like 15.50)
-        loanInterest.click();
-        loanInterest.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
-        loanInterest.sendKeys("15.00"); // example: set to 15.00
-
-// If the page validates on blur/tab:
-        loanInterest.sendKeys(Keys.TAB);
-
-
     }
-
-    public void setLoantermByyear(){
-        WebElement loanterm=wait.until(
-                ExpectedConditions.elementToBeClickable(loanTerm));
-        loanterm.click();
-
-        loanterm.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
-        loanterm.sendKeys("1");
-
-    }
-    public void setLoanTermByMonth(){
-        WebElement loanterm =wait.until(
-                ExpectedConditions.elementToBeClickable(loanMonth));
-        loanterm.click();
-
-
-        loanterm.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
-        loanterm.sendKeys("12");
-    }
-
     public void setLoanfees(){
         WebElement loanfees=wait.until(
                 ExpectedConditions.elementToBeClickable(loanFees));
@@ -101,9 +83,7 @@ public class EmiCalculatorPage {
         loanfees.sendKeys("0");
     }
 
-    //sliderTest
-
-    private final By sliderHandle =By.cssSelector(".ui-slider-handle");
+    private final By sliderHandle = By.cssSelector(".ui-slider-handle");
 
 
 
@@ -163,21 +143,22 @@ public class EmiCalculatorPage {
 
     public void display(){
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(emiAmountSpan));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(tenureSpan));
         wait.until(ExpectedConditions.visibilityOfElementLocated(aprSpan));
         wait.until(ExpectedConditions.visibilityOfElementLocated(totalIntrestSpan));
         wait.until(ExpectedConditions.visibilityOfElementLocated(totalAmountSpan));
 
 // Read text
-        String emiAmountText     = driver.findElement(emiAmountSpan).getText();        // e.g., "8,207"
+        String emiAmountText     = driver.findElement(tenureSpan).getText();        // e.g., "8,207"
         String aprText = driver.findElement(aprSpan).getText();    // e.g., "92,397"
         String totalInterestText = driver.findElement(totalIntrestSpan).getText();    // e.g., "92,397"
         String totalAmountText   = driver.findElement(totalAmountSpan).getText();
         // e.g., "4,92,397"
-        System.out.println("Loan EMI "+emiAmountText);
+        System.out.println("Loan Tenure "+emiAmountText);
         System.out.println("Loan APR "+ aprText);
         System.out.println("Total Interest "+totalInterestText);
         System.out.println("TotalAmount "+totalAmountText);
 
     }
+
 }
