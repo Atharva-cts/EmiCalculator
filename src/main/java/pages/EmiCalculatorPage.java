@@ -15,18 +15,16 @@ public class EmiCalculatorPage {
     // Locators (adjust if your site differs)
     private final By dropdownToggle = By.id("menu-item-dropdown-2696");
     private final By loanCalculatorLink = By.linkText("Loan Calculator");
-    private final By loanAmountLink=By.xpath("//a[normalize-space()='Loan Amount Calculator']");
     private final By loanAmount=By.id("loanamount");
     private final By loanIntrest=By.id("loanintrest");
     private final By loanTerm=By.id("loanterm");
     private final By loanMonth=By.xpath("//label[normalize-space()='Mo']");
     private final By loanFees=By.id("loanfees");
 
-    private final By emiAmountSpan     = By.cssSelector("div[id='loansummary-emi'] p span");
-    private final By  aprValueSpan = By.cssSelector("div[id='loansummary-apr'] p span");
-    private final By  totalIntrestSpan = By.cssSelector("div[id='loansummary-totalinterest'] p span");
+    private final   By emiAmountSpan        = By.cssSelector("#emiamount p > span");
+    private final   By totalInterestSpan    = By.cssSelector("#emitotalinterest p > span");
+    private final   By totalAmountSpan      = By.cssSelector("#emitotalamount p > span");
 
-    private final By totalAmountSpan   = By.cssSelector("div[id='loansummary-totalamount'] p");
 
     public EmiCalculatorPage(WebDriver driver) {
         this.driver = driver;
