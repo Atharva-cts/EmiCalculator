@@ -164,13 +164,13 @@ public class EmiCalculatorPage {
     public void display(){
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(emiAmountSpan));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(aprSpan));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(aprValueSpan));
         wait.until(ExpectedConditions.visibilityOfElementLocated(totalIntrestSpan));
         wait.until(ExpectedConditions.visibilityOfElementLocated(totalAmountSpan));
 
 // Read text
         String emiAmountText     = driver.findElement(emiAmountSpan).getText();        // e.g., "8,207"
-        String aprText = driver.findElement(aprSpan).getText();    // e.g., "92,397"
+        String aprText = driver.findElement(aprValueSpan).getText();    // e.g., "92,397"
         String totalInterestText = driver.findElement(totalIntrestSpan).getText();    // e.g., "92,397"
         String totalAmountText   = driver.findElement(totalAmountSpan).getText();
         // e.g., "4,92,397"
