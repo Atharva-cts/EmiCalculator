@@ -5,9 +5,9 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
-import pages.LoanCalculatorPage;
+import pages.EmiCalculatorPage;
 
-public class LoanCalculatorTest {
+public class EmiCalculatorTest {
 
     private WebDriver driver;
 
@@ -18,7 +18,7 @@ public class LoanCalculatorTest {
 
         driver.get("https://emicalculator.net/");
 
-        LoanCalculatorPage page = new LoanCalculatorPage(driver);
+        EmiCalculatorPage page = new EmiCalculatorPage(driver);
         page.selectLoanCalculator();
         page.setLoanAmount();
         page.setLoanIntrest();

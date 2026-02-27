@@ -7,7 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-public class LoanCalculatorPage {
+public class EmiCalculatorPage {
 
     private final WebDriver driver;
     private final WebDriverWait wait;
@@ -26,7 +26,7 @@ public class LoanCalculatorPage {
     private final   By totalAmountSpan      = By.cssSelector("#emitotalamount p > span");
 
 
-    public LoanCalculatorPage(WebDriver driver) {
+    public EmiCalculatorPage(WebDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(20)); // simple explicit wait
     }
