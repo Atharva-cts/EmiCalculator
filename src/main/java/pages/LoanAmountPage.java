@@ -22,7 +22,7 @@ public class LoanAmountPage {
     private final By loanFees=By.id("loanfees");
 
     private final By loanAmountSpan     = By.cssSelector("div[id='loansummary-loanamount'] p span");
-    private final By  aprSpan = By.cssSelector("div[id='loansummary-apr'] p span");
+    private final By  aprValueSpan = By.cssSelector("div[id='loansummary-apr'] p span");
     private final By  totalIntrestSpan = By.cssSelector("div[id='loansummary-totalinterest'] p span");
 
     private final By totalAmountSpan   = By.cssSelector("div[id='loansummary-totalamount'] p");
@@ -97,13 +97,13 @@ public class LoanAmountPage {
     public void display(){
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(loanAmountSpan));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(aprSpan));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(aprValueSpan));
         wait.until(ExpectedConditions.visibilityOfElementLocated(totalIntrestSpan));
         wait.until(ExpectedConditions.visibilityOfElementLocated(totalAmountSpan));
 
 // Read text
         String emiAmountText     = driver.findElement(loanAmountSpan).getText();        // e.g., "8,207"
-        String aprText = driver.findElement(aprSpan).getText();    // e.g., "92,397"
+        String aprText = driver.findElement(aprValueSpan).getText();    // e.g., "92,397"
         String totalInterestText = driver.findElement(totalIntrestSpan).getText();    // e.g., "92,397"
         String totalAmountText   = driver.findElement(totalAmountSpan).getText();
         // e.g., "4,92,397"
