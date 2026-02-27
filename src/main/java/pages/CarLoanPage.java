@@ -3,6 +3,8 @@ package pages;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 
+import java.io.File;
+
 public class CarLoanPage {
 
     WebDriver driver;
@@ -17,6 +19,7 @@ public class CarLoanPage {
     By emi = By.xpath("//div[@id='emiamount']/p/span");
     By totalInterest = By.xpath("//div[@id='emitotalinterest']/p/span");
     By totalAmount = By.xpath("//div[@id='emitotalamount']/p/span");
+
 
     public CarLoanPage(WebDriver driver) {
         this.driver = driver;
@@ -41,13 +44,14 @@ public class CarLoanPage {
 
     public void moveTermSlider(int x) {
         WebElement slider = driver.findElement(termSlider);
+        //System.out.println("Locations"+ slider.getLocation()); // get the locations of slider x & y axis
         actions.clickAndHold(slider).moveByOffset(x, 0).release().perform();
     }
 
 
     public void scrollDown() {
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("window.scrollBy(0, 300);");
+        js.executeScript("window.scrollBy(0, 500);");
     }
 
     public String getEMI() {
@@ -60,5 +64,14 @@ public class CarLoanPage {
 
     public String getTotalAmount() {
         return driver.findElement(totalAmount).getText();
+    }
+
+    public void sreenshotClick(){
+        WebElement ele = driver.findElement(By.xpath("//div[@class='row gutter-left gutter-right']"));
+        TakesScreenshot ts = (TakesScreenshot) driver;
+
+        File sourceFile = ele.getScreenshotAs(OutputType.FILE);
+        File targetFile = new File(System.getProperty("user.dir")+"\\screenshots\\element.png");
+        sourceFile.renameTo(targetFile);
     }
 }
