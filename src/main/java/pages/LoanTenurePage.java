@@ -1,5 +1,6 @@
 package pages;
 
+import base.BasePage;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -7,7 +8,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-public class LoanTenurePage {
+public class LoanTenurePage extends BasePage {
 
     private final WebDriver driver;
     private final WebDriverWait wait;
@@ -29,6 +30,7 @@ public class LoanTenurePage {
     private final By totalAmountSpan   = By.cssSelector("div[id='loansummary-totalamount'] p");
 
     public LoanTenurePage(WebDriver driver) {
+       super(driver);
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(20)); // simple explicit wait
     }

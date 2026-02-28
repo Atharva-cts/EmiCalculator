@@ -1,27 +1,22 @@
 package tests;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+import base.BaseTest;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import pages.EmiCalculatorPage;
 
-public class EmiCalculatorTest {
+public class EmiCalculatorTest extends BaseTest {
 
-    private WebDriver driver;
     private EmiCalculatorPage page;
 
     @BeforeClass(alwaysRun = true)
     public void setUpSuite() {
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.get("https://emicalculator.net/");
+
         page = new EmiCalculatorPage(driver);
     }
 
     @AfterClass(alwaysRun = true)
     public void tearDownSuite() {
-        if (driver != null) driver.quit();
     }
 
     /**

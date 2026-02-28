@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="FullAutomationSuite" verbose="1" parallel="false">
+
+    <test name="RunAllTestsSequentially">
+        <classes>
+            <class name="tests.APITest" />
+            <class name="tests.CarLoanTestCases" />
+            <class name="tests.EmiCalculatorTest" />
+            <class name="tests.HomeLoanEMITest" />
+            <class name="tests.LoanAmountTest" />
+            <class name="tests.LoanTenureTest" />
+        </classes>
+    </test>
+
+</suite>
