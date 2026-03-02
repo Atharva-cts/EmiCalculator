@@ -83,7 +83,6 @@ public abstract class BasePage {
         ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, arguments[0]);", yPixels);
     }
 
-    // -------- Text helpers --------
     protected String getText(By locator) {
         return waitVisible(locator).getText().trim();
     }

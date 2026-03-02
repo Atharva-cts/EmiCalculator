@@ -1,54 +1,44 @@
 package base;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.*;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import java.time.Duration;
+import utils.ConfigurationUtil;
+import utils.WebDriverUtil;
 
 public abstract class BaseTest {
 
     protected WebDriver driver;
     protected WebDriverWait wait;
+
     protected String baseUrl = "https://emicalculator.net/";
 
     @BeforeClass(alwaysRun = true)
-    @Parameters({"headless"})
-    public void setUp(@Optional("false") String headless) {
-        // If you want WebDriverManager, add it to pom and uncomment:
-        // io.github.bonigarcia.wdm.WebDriverManager.chromedriver().setup();
+    @Parameters({"headless", "baseUrl"})
+    public void setUp(
+            @Optional("false") String headlessParam,
+            @Optional("") String baseUrlParam
+    ) {
 
-        ChromeOptions options = new ChromeOptions();
-        if (Boolean.parseBoolean(headless)) {
-            options.addArguments("--headless=new");
-            options.addArguments("--window-size=1920,1080");
-        } else {
-            options.addArguments("--start-maximized");
-        }
-        options.addArguments("--disable-notifications");
-        options.addArguments("--disable-infobars");
-        options.addArguments("--remote-allow-origins=*");
+        boolean runHeadless = (headlessParam != null && !headlessParam.isEmpty())
+                ? Boolean.parseBoolean(headlessParam)
+                : ConfigurationUtil.getBoolean("headless", false);
 
-        driver = new ChromeDriver(options);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        driver = WebDriverUtil.createChromeDriver(runHeadless);
+        wait   = new WebDriverWait(driver, Duration.ofSeconds(15));
 
-        driver.get(baseUrl);
+
+        String urlFromConfig = ConfigurationUtil.get("baseUrl", this.baseUrl);
+        String urlToOpen = (baseUrlParam != null && !baseUrlParam.isEmpty()) ? baseUrlParam : urlFromConfig;
+
+        driver.get(urlToOpen);
+
         dismissCookieIfPresent();
     }
 
     protected void dismissCookieIfPresent() {
-        try {
-            By cookieBtn = By.id("ez-accept-all");
-            new WebDriverWait(driver, Duration.ofSeconds(5))
-                    .until(ExpectedConditions.elementToBeClickable(cookieBtn))
-                    .click();
-        } catch (Exception ignored) {
-            // No cookie banner or already dismissed
-        }
+        WebDriverUtil.dismissCookieIfPresent(driver);
     }
 
     @AfterClass(alwaysRun = true)
@@ -56,12 +46,5 @@ public abstract class BaseTest {
         if (driver != null) driver.quit();
     }
 
-    /** Optional helper: create page objects with `page(MyPage.class)` */
-    protected <T extends BasePage> T page(Class<T> clazz) {
-        try {
-            return clazz.getDeclaredConstructor(org.openqa.selenium.WebDriver.class).newInstance(driver);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to create page object: " + clazz.getSimpleName(), e);
-        }
-    }
+
 }
