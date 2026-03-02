@@ -1,5 +1,6 @@
 package tests;
 
+import base.BaseTest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -14,11 +15,9 @@ import org.testng.Assert;
 
 
 
-public class HomeLoanEMITest {
+public class HomeLoanEMITest extends BaseTest{
 
-    private WebDriver driver;
     private HomeLoanPage homePage;
-    JavascriptExecutor js = (JavascriptExecutor) driver;
 
     @BeforeClass
     public void setup() {
@@ -36,12 +35,9 @@ public class HomeLoanEMITest {
         options.setExperimentalOption("prefs", chromePrefs);
 
         // 4. Initialize the driver with the options
-        driver = new ChromeDriver(options);
 
-        driver.manage().window().maximize();
         homePage = new HomeLoanPage(driver);
 
-        driver.get("https://emicalculator.net/");
     }
 
     @AfterClass(alwaysRun = true)

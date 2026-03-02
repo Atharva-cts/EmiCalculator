@@ -1,26 +1,22 @@
 package tests;
-
+import base.BaseTest;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.*;
 import pages.LoanAmountPage;
 
-public class LoanAmountTest {
+public class LoanAmountTest extends  BaseTest{
 
-    private WebDriver driver;
     private LoanAmountPage page;
 
     @BeforeClass(alwaysRun = true)
     public void setUpSuite() {
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.get("https://emicalculator.net/");
+
         page = new LoanAmountPage(driver);
     }
 
     @AfterClass(alwaysRun = true)
     public void tearDownSuite() {
-        if (driver != null) driver.quit();
     }
 
     /**
