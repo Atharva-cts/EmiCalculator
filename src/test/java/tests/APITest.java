@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 public class APITest{
 
     @Test(priority = 1)
-    public void decathlonLoadAPITest(){
+    public void EmiCalculatorAPITest(){
         RestAssured.useRelaxedHTTPSValidation();
         int statusCode = RestAssured.given().when()
                 .get("https://emicalculator.net/")
