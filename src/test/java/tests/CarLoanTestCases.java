@@ -1,7 +1,5 @@
 package tests;
-
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+import base.BaseTest;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import pages.CarLoanPage;
@@ -9,16 +7,12 @@ import pages.CarLoanPage;
 import java.io.File;
 
 
-public class CarLoanTestCases {
+public class CarLoanTestCases extends BaseTest {
 
-    WebDriver driver;
     CarLoanPage page;
 
     @BeforeClass
     public void setUp() {
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.get("https://emicalculator.net/"); // Change to your real URL
 
         page = new CarLoanPage(driver);
         System.out.println("Browser opened and site loaded...");
