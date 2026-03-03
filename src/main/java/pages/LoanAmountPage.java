@@ -4,10 +4,10 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
+import base.BasePage;
 import java.time.Duration;
 
-public class LoanAmountPage {
+public class LoanAmountPage extends BasePage {
 
     private final WebDriver driver;
     private final WebDriverWait wait;
@@ -22,13 +22,14 @@ public class LoanAmountPage {
     private final By loanFees=By.id("loanfees");
 
     private final By loanAmountSpan     = By.cssSelector("div[id='loansummary-loanamount'] p span");
-    private final By  aprSpan = By.cssSelector("div[id='loansummary-apr'] p span");
+    private final By  aprValueSpan = By.cssSelector("div[id='loansummary-apr'] p span");
     private final By  totalIntrestSpan = By.cssSelector("div[id='loansummary-totalinterest'] p span");
 
     private final By totalAmountSpan   = By.cssSelector("div[id='loansummary-totalamount'] p");
 
 
     public LoanAmountPage(WebDriver driver) {
+        super(driver);
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(20)); // simple explicit wait
     }
@@ -97,13 +98,13 @@ public class LoanAmountPage {
     public void display(){
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(loanAmountSpan));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(aprSpan));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(aprValueSpan));
         wait.until(ExpectedConditions.visibilityOfElementLocated(totalIntrestSpan));
         wait.until(ExpectedConditions.visibilityOfElementLocated(totalAmountSpan));
 
 // Read text
         String emiAmountText     = driver.findElement(loanAmountSpan).getText();        // e.g., "8,207"
-        String aprText = driver.findElement(aprSpan).getText();    // e.g., "92,397"
+        String aprText = driver.findElement(aprValueSpan).getText();    // e.g., "92,397"
         String totalInterestText = driver.findElement(totalIntrestSpan).getText();    // e.g., "92,397"
         String totalAmountText   = driver.findElement(totalAmountSpan).getText();
         // e.g., "4,92,397"

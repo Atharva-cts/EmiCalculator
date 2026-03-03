@@ -5,23 +5,21 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import pages.LoanTenurePage;
+import base.BaseTest;
 
-public class LoanTenureTest {
+public class LoanTenureTest extends BaseTest{
 
-    private WebDriver driver;
     private LoanTenurePage page;
 
     @BeforeClass(alwaysRun = true)
     public void setUpSuite() {
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.get("https://emicalculator.net/");
+
         page = new LoanTenurePage(driver);
     }
 
     @AfterClass(alwaysRun = true)
     public void tearDownSuite() {
-        if (driver != null) driver.quit();
+
     }
 
     /**
