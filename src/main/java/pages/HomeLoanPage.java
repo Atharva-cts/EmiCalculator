@@ -1,12 +1,12 @@
 package pages;
-import base.BasePage;
+
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-public class HomeLoanPage extends BasePage{
+public class HomeLoanPage {
 
     private WebDriver driver;
     private WebDriverWait wait;
@@ -34,18 +34,19 @@ public class HomeLoanPage extends BasePage{
 
 
     public HomeLoanPage(WebDriver driver) {
-        super(driver);
         this.driver = driver;
         this.wait  = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     // --- Explicit Wait Click ---
-    public void click(By locator) {
+    private void click(By locator) {
         wait.until(ExpectedConditions.elementToBeClickable(locator)).click();
+
+
     }
 
     // --- Explicit Wait SendKeys ---
-    public void type(By locator, String text) {
+    private void type(By locator, String text) {
         WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
         element.sendKeys(Keys.chord(Keys.CONTROL, "a"));  // select all
         element.sendKeys(Keys.DELETE);                    // clear

@@ -1,22 +1,19 @@
 package tests;
 
-import base.BaseTest;
 import org.openqa.selenium.By;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.*;
 import org.testng.Assert;
 import pages.HomeLoanPage;
-import org.testng.Assert;
 
 
 
 
-public class HomeLoanEMITest extends BaseTest{
+public class HomeLoanEMITest {
 
+    private WebDriver driver;
     private HomeLoanPage homePage;
 
     @BeforeClass
@@ -35,9 +32,11 @@ public class HomeLoanEMITest extends BaseTest{
         options.setExperimentalOption("prefs", chromePrefs);
 
         // 4. Initialize the driver with the options
+        driver = new ChromeDriver(options);
 
+        driver.manage().window().maximize();
         homePage = new HomeLoanPage(driver);
-
+        driver.get("https://emicalculator.net/");
     }
 
     @AfterClass(alwaysRun = true)
@@ -49,8 +48,6 @@ public class HomeLoanEMITest extends BaseTest{
     public void test_OpenCalculatorPage() {
         homePage.openHomeLoanCalculator();
         Assert.assertTrue(driver.getTitle().contains("EMI"), "Home Loan EMI page did NOT open.");
-
-
     }
 
     @Test(priority = 2, dependsOnMethods = "test_OpenCalculatorPage")
@@ -70,12 +67,10 @@ public class HomeLoanEMITest extends BaseTest{
     }
 
     @Test(priority = 3, dependsOnMethods = "test_OpenCalculatorPage")
-    public void homeowner_Expenses() throws InterruptedException {
-
+    public void homeowner_Expenses() {
+        homePage.enterOneTimeExpenses("15");
         Assert.assertTrue(driver.findElement(By.id("onetimeexpenses")).isDisplayed(),
                 "One‑time expenses field not visible.");
-
-        homePage.enterOneTimeExpenses("15");
         homePage.enterPropertTaxes("0.35");
         homePage.enterHomeInsurance("0.07");
         homePage.enterMaintenanceExpenses("2750");
@@ -92,6 +87,6 @@ public class HomeLoanEMITest extends BaseTest{
     public void Excel_file() throws InterruptedException {
         homePage.Excel_Sheet_click();
 
-
+        Thread.sleep(3000);
     }
 }
