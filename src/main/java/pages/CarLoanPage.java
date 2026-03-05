@@ -1,11 +1,11 @@
 package pages;
-
+import base.BasePage;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 
 import java.io.File;
 
-public class CarLoanPage {
+public class CarLoanPage extends BasePage {
 
     WebDriver driver;
     Actions actions;
@@ -22,6 +22,7 @@ public class CarLoanPage {
 
 
     public CarLoanPage(WebDriver driver) {
+        super(driver);
         this.driver = driver;
         this.actions = new Actions(driver);
     }

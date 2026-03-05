@@ -41,6 +41,8 @@ public class HomeLoanPage {
     // --- Explicit Wait Click ---
     private void click(By locator) {
         wait.until(ExpectedConditions.elementToBeClickable(locator)).click();
+
+
     }
 
     // --- Explicit Wait SendKeys ---
