@@ -1,78 +1,52 @@
 package pages;
+
 import base.BasePage;
 import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Actions;
-
 import java.io.File;
 
 public class CarLoanPage extends BasePage {
-
-    WebDriver driver;
-    Actions actions;
-
-    By carLoanLink = By.linkText("Car Loan");
-    By loanAmount = By.id("loanamount");
-    By loanSpinner = By.xpath("//input[@id='loanamount']/following-sibling::div/span");
-    By interestSlider = By.id("loaninterestslider");
-    By termSlider = By.id("loantermslider");
-
-    By emi = By.xpath("//div[@id='emiamount']/p/span");
-    By totalInterest = By.xpath("//div[@id='emitotalinterest']/p/span");
-    By totalAmount = By.xpath("//div[@id='emitotalamount']/p/span");
-
+    private final By carLoanLink   = By.linkText("Car Loan");
+    private final By loanAmount    = By.id("loanamount");
+    private final By loanSpinner   = By.xpath("//input[@id='loanamount']/following-sibling::div/span");
+    private final By interestSlider= By.id("loaninterestslider");
+    private final By termSlider    = By.id("loantermslider");
+    private final By emi           = By.xpath("//div[@id='emiamount']/p/span");
+    private final By totalInterest = By.xpath("//div[@id='emitotalinterest']/p/span");
+    private final By totalAmount   = By.xpath("//div[@id='emitotalamount']/p/span");
 
     public CarLoanPage(WebDriver driver) {
         super(driver);
-        this.driver = driver;
-        this.actions = new Actions(driver);
     }
 
     public void clickCarLoan() {
-        driver.findElement(carLoanLink).click();
+        click(carLoanLink); // BasePage.click
     }
 
     public void enterLoanAmount(String amount) {
-        WebElement amt = driver.findElement(loanAmount);
-        amt.clear();
-        amt.sendKeys(amount);
-        driver.findElement(loanSpinner).click();
+        type(loanAmount, amount); // BasePage.type -> clears + types + TAB
+        click(loanSpinner);       // ensure blur/update (unchanged intent)
     }
 
     public void moveInterestSlider(int x) {
-        WebElement slider = driver.findElement(interestSlider);
-        actions.clickAndHold(slider).moveByOffset(x, 0).release().perform();
+        dragHandleBy(interestSlider, x); // BasePage.dragHandleBy
     }
 
     public void moveTermSlider(int x) {
-        WebElement slider = driver.findElement(termSlider);
-        //System.out.println("Locations"+ slider.getLocation()); // get the locations of slider x & y axis
-        actions.clickAndHold(slider).moveByOffset(x, 0).release().perform();
+        dragHandleBy(termSlider, x); // BasePage.dragHandleBy
     }
-
 
     public void scrollDown() {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("window.scrollBy(0, 500);");
+        scrollBy(500); // BasePage.scrollBy
     }
 
-    public String getEMI() {
-        return driver.findElement(emi).getText();
-    }
-
-    public String getTotalInterest() {
-        return driver.findElement(totalInterest).getText();
-    }
-
-    public String getTotalAmount() {
-        return driver.findElement(totalAmount).getText();
-    }
+    public String getEMI()           { return getText(emi); }
+    public String getTotalInterest() { return getText(totalInterest); }
+    public String getTotalAmount()   { return getText(totalAmount); }
 
     public void sreenshotClick(){
-        WebElement ele = driver.findElement(By.xpath("//div[@class='row gutter-left gutter-right']"));
-        TakesScreenshot ts = (TakesScreenshot) driver;
-
-        File sourceFile = ele.getScreenshotAs(OutputType.FILE);
-        File targetFile = new File(System.getProperty("user.dir")+"\\screenshots\\element.png");
+        WebElement ele = waitVisible(By.xpath("//div[@class='row gutter-left gutter-right']"));
+        File sourceFile  = ele.getScreenshotAs(OutputType.FILE);
+        File targetFile  = new File(System.getProperty("user.dir") + "\\\\screenshots\\\\element.png");
         sourceFile.renameTo(targetFile);
     }
 }
