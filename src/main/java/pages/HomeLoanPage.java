@@ -1,122 +1,58 @@
 package pages;
 
+import base.BasePage;
 import org.openqa.selenium.*;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
+public class HomeLoanPage extends BasePage {
 
-public class HomeLoanPage {
+    private final By calculatorsDropdown = By.id("menu-item-dropdown-2696");
+    private final By homeLoanLink        = By.xpath("//a[@title='Home Loan EMI Calculator']");
+    private final By homeValueField      = By.id("homeprice");
+    private final By marginField         = By.id("downpayment");
+    private final By loanInsurance       = By.id("homeloaninsuranceamount");
+    private final By loanAmount          = By.id("homeloanamount");
+    private final By interestRate        = By.id("homeloaninterest");
+    private final By loanTenure          = By.id("homeloanterm");
+    private final By loanFees            = By.id("loanfees");
+    private final By startMonth          = By.id("startmonthyear");
+    private final By monthSelector       = By.xpath("//span[normalize-space()='Jun']");
 
-    private WebDriver driver;
-    private WebDriverWait wait;
-
-    // Locators of Home Loan Details
-    private By calculatorsDropdown = By.id("menu-item-dropdown-2696");
-    private By homeLoanLink        = By.xpath("//a[@title='Home Loan EMI Calculator']");
-    private By homeValueField      = By.id("homeprice");
-    private By marginField         =By.id("downpayment");
-    private By loanInsurance       =By.xpath("//input[@id='homeloaninsuranceamount']");
-    private By loanAmount         =By.xpath("//input[@id='homeloanamount']");
-    private By interestRate       =By.xpath("//input[@id='homeloaninterest']");
-    private By loanTenure       =By.xpath("//input[@id='homeloanterm']");
-    private By loanFees      =By.xpath("//input[@id='loanfees']");
-    private By startMonth     =By.xpath("//input[@id='startmonthyear']");
-    private By monthSelector   =By.xpath("//span[normalize-space()='Jun']");
-
-    //Locators of Homeowner Expenses
-    private By oneTimeExpenses   =By.xpath("//input[@id='onetimeexpenses']");
-    private By propertyTaxes    =By.xpath("//input[@id='propertytaxes']");
-    private By home_Insurance     =By.xpath("//input[@id='homeinsurance']");
-    private By maintenance_Expenses    =By.xpath("//input[@id='maintenanceexpenses']");
-    private By Excel_file   =By.xpath("//a[@title='Download Excel Spreadsheet']");
-
-
+    // Homeowner Expenses
+    private final By oneTimeExpenses     = By.id("onetimeexpenses");
+    private final By propertyTaxes       = By.id("propertytaxes");
+    private final By home_Insurance      = By.id("homeinsurance");
+    private final By maintenance_Expenses= By.id("maintenanceexpenses");
+    private final By Excel_file          = By.xpath("//a[@title='Download Excel Spreadsheet']");
 
     public HomeLoanPage(WebDriver driver) {
-        this.driver = driver;
-        this.wait  = new WebDriverWait(driver, Duration.ofSeconds(10));
+        super(driver);
     }
 
-    // --- Explicit Wait Click ---
-    private void click(By locator) {
-        wait.until(ExpectedConditions.elementToBeClickable(locator)).click();
-
-
-    }
-
-    // --- Explicit Wait SendKeys ---
-    private void type(By locator, String text) {
-        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-        element.sendKeys(Keys.chord(Keys.CONTROL, "a"));  // select all
-        element.sendKeys(Keys.DELETE);                    // clear
-        element.sendKeys(text);                           // type
-    }
-
-    public void scrollDown() {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("window.scrollBy(0, 2000);");
-    }
-    // --- Page Actions ---
     public void openHomeLoanCalculator() {
         click(calculatorsDropdown);
         click(homeLoanLink);
+        waitVisible(homeValueField);
+    }
+    public void Excel_Sheet_click() { click(Excel_file); }
 
-        // Wait for page to load by waiting for home value field
-        wait.until(ExpectedConditions.visibilityOfElementLocated(homeValueField));
-    }
-
-    public void Excel_Sheet_click() {
-        click(Excel_file);
-
-    }
-
-    public void enterHomeValue(String value) {
-        type(homeValueField, value);
-    }
-
-    public void enterMargin(String value) {
-        type(marginField, value);
-    }
-
-    public void enterLoanInsurance(String value) {
-        type(loanInsurance, value);
-    }
-
-    public void enterLoanAmount(String value) {
-        type(loanAmount, value);
-    }
-    public void enterInterestRate(String value) {
-        type(interestRate, value);
-    }
-    public void enterLoanTenure(String value) {
-        type(loanTenure, value);
-    }
-
-    public void enterLoanFees(String value) {
-        type(loanFees, value);
-    }
+    public void enterHomeValue(String v)         { type(homeValueField, v); }
+    public void enterMargin(String v)            { type(marginField, v); }
+    public void enterLoanInsurance(String v)     { type(loanInsurance, v); }
+    public void enterLoanAmount(String v)        { type(loanAmount, v); }
+    public void enterInterestRate(String v)      { type(interestRate, v); }
+    public void enterLoanTenure(String v)        { type(loanTenure, v); }
+    public void enterLoanFees(String v)          { type(loanFees, v); }
 
     public void enterMonth() throws InterruptedException {
         click(startMonth);
-        Thread.sleep(1000);
+        Thread.sleep(1000);       // keeping your timing; could be replaced by an explicit wait on monthSelector
         click(monthSelector);
-
     }
 
-    public void enterOneTimeExpenses(String value) {
-        type(oneTimeExpenses, value);
-    }
+    public void enterOneTimeExpenses(String v)   { type(oneTimeExpenses, v); }
+    public void enterPropertTaxes(String v)      { type(propertyTaxes, v); }
+    public void enterHomeInsurance(String v)     { type(home_Insurance, v); }
+    public void enterMaintenanceExpenses(String v){ type(maintenance_Expenses, v); }
 
-    public void enterPropertTaxes(String value) {
-        type(propertyTaxes, value);
-    }
-
-    public void enterHomeInsurance(String value) {
-        type(home_Insurance, value);
-    }
-
-    public void enterMaintenanceExpenses(String value) {
-        type(maintenance_Expenses, value);
-    }
+    public void scrollDown() { scrollBy(2000); }
 }
