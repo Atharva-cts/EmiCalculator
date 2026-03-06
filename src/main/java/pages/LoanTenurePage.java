@@ -2,165 +2,52 @@ package pages;
 
 import base.BasePage;
 import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.time.Duration;
 
 public class LoanTenurePage extends BasePage {
-
-    private final WebDriver driver;
-    private final WebDriverWait wait;
-
-    // Locators (adjust if your site differs)
-    private final By dropdownToggle = By.id("menu-item-dropdown-2696");
+    private final By dropdownToggle     = By.id("menu-item-dropdown-2696");
     private final By loanCalculatorLink = By.linkText("Loan Calculator");
-    private final By loanTenureLink=By.xpath("//a[normalize-space()='Loan Tenure Calculator']");
-    private final By emiAmount=By.xpath("//input[@id='loanemi']");
-    private final By loanIntrest=By.xpath("//input[@id='loaninterest']");
-    private final By loanTerm=By.id("loanterm");
-    private final By loanFees=By.id("loanfees");
+    private final By loanTenureLink     = By.xpath("//a[normalize-space()='Loan Tenure Calculator']");
 
+    private final By loanAmount         = By.id("loanamount");
+    private final By emiAmount          = By.id("loanemi");
+    private final By loanInterest       = By.id("loaninterest");
+    private final By loanFees           = By.id("loanfees");
 
-    private final By tenureSpan     = By.xpath("//div[@id='loansummary-tenure']//p[1]");
-    private final By  aprValueSpan = By.cssSelector("div[id='loansummary-apr'] p span");
-    private final By  totalIntrestSpan = By.cssSelector("div[id='loansummary-totalinterest'] p span");
+    private final By tenureSpan         = By.xpath("//div[@id='loansummary-tenure']//p[1]");
+    private final By aprValueSpan       = By.cssSelector("div[id='loansummary-apr'] p span");
+    private final By totalIntrestSpan   = By.cssSelector("div[id='loansummary-totalinterest'] p span");
+    private final By totalAmountSpan    = By.cssSelector("div[id='loansummary-totalamount'] p");
 
-    private final By totalAmountSpan   = By.cssSelector("div[id='loansummary-totalamount'] p");
+    private final By sliderHandle       = By.cssSelector(".ui-slider-handle");
 
-    public LoanTenurePage(WebDriver driver) {
-       super(driver);
-        this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(20)); // simple explicit wait
-    }
+    public LoanTenurePage(WebDriver driver) { super(driver); }
 
-    public void openDropdown() {
-        wait.until(ExpectedConditions.elementToBeClickable(dropdownToggle)).click();
-    }
+    public void openDropdown()        { click(dropdownToggle); }
+    public void clickLoanCalculator() { click(loanCalculatorLink); }
+    public void selectLoanCalculator(){ openDropdown(); clickLoanCalculator(); click(loanTenureLink); }
 
-    public void clickLoanCalculator() {
-        wait.until(ExpectedConditions.elementToBeClickable(loanCalculatorLink)).click();
-    }
-    public void selectLoanCalculator() {
-        openDropdown();
-        clickLoanCalculator();
-        wait.until(ExpectedConditions.elementToBeClickable(loanTenureLink)).click();
-    }
-    public void setLoanAmount(){
+    public void setLoanAmount()   { type(loanAmount, "15000000"); }
+    public void setEmiAmount()    { type(emiAmount, "15000"); }
+    public void setLoanIntrest()  { type(loanInterest, "15.00"); }
+    public void setLoanfees()     { type(loanFees, "0"); }
 
-        WebElement loanAmount = wait.until(ExpectedConditions.elementToBeClickable(By.id("loanamount")));
+    // Slider helpers
+    public boolean isHandleReady()    { WebElement h = waitVisible(sliderHandle); return h.isDisplayed() && h.isEnabled(); }
+    public String  getAriaNow()       { return readAriaNow(sliderHandle); }
+    public Double  getLeftPercent()   { return readLeftPercent(sliderHandle); }
+    public void    dragHandleBy(int x){ super.dragHandleBy(sliderHandle, x); }
+    public boolean nudgeRight(int s)  { String b=getAriaNow(); nudge(sliderHandle, Keys.ARROW_RIGHT, s); String a=getAriaNow(); return b!=null && a!=null && !a.equals(b); }
 
-// Clear and type the value
-
-        loanAmount.click();
-        loanAmount.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
-        loanAmount.sendKeys("15000000");
-
-    }
-    public void setEmiAmount(){
-
-        WebElement loanAmount = wait.until(ExpectedConditions.elementToBeClickable(emiAmount));
-
-// Clear and type the value
-
-        loanAmount.click();
-        loanAmount.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
-        loanAmount.sendKeys("15000");
-
-    }
-    public void setLoanIntrest() {
-        //driver.findElement(loanAmount).sendKeys("1500000");
-
-        WebElement loanInterest = wait.until(
-                ExpectedConditions.elementToBeClickable(By.id("loaninterest"))
-        );
-    }
-    public void setLoanfees(){
-        WebElement loanfees=wait.until(
-                ExpectedConditions.elementToBeClickable(loanFees));
-        loanfees.click();
-
-        loanfees.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
-        loanfees.sendKeys("0");
-    }
-
-    private final By sliderHandle = By.cssSelector(".ui-slider-handle");
-
-
-
-    /** Basic readiness: visible + enabled + can receive focus (tabindex or click). */
-    public boolean isHandleReady() {
-        WebElement handle = wait.until(ExpectedConditions.visibilityOfElementLocated(sliderHandle));
-        return handle.isDisplayed() && handle.isEnabled();
-    }
-
-    /** Read ARIA value if present; returns null if not present. */
-    public String getAriaNow() {
-        WebElement handle = wait.until(ExpectedConditions.visibilityOfElementLocated(sliderHandle));
-        return handle.getAttribute("aria-valuenow"); // may be null if not set
-    }
-
-    /** Read inline left% from style (e.g., "left: 26%;"). Returns numeric percent or null. */
-    public Double getLeftPercent() {
-        WebElement handle = wait.until(ExpectedConditions.visibilityOfElementLocated(sliderHandle));
-        String style = handle.getAttribute("style"); // e.g., "left: 26%;"
-        if (style == null) return null;
-        // Extract the number
-        java.util.regex.Matcher m = java.util.regex.Pattern.compile("left:\\s*([\\d.]+)%").matcher(style);
-        if (m.find()) {
-            return Double.parseDouble(m.group(1));
-        }
-        return null;
-    }
-
-    /** Move the handle using drag-and-drop by X offset (pixels). */
-    public void dragHandleBy(int offsetXPx) {
-        WebElement handle = wait.until(ExpectedConditions.elementToBeClickable(sliderHandle));
-        new Actions(driver)
-                .moveToElement(handle)
-                .clickAndHold()
-                .moveByOffset(offsetXPx, 0)
-                .release()
-                .perform();
-    }
-
-    /** Nudge with keyboard (if the slider supports it). */
-    public boolean nudgeRight(int steps) {
-        WebElement handle = wait.until(ExpectedConditions.elementToBeClickable(sliderHandle));
-        handle.click();
-        String before = handle.getAttribute("aria-valuenow");
-        for (int i = 0; i < steps; i++) {
-            handle.sendKeys(Keys.ARROW_RIGHT);
-        }
-        String after = handle.getAttribute("aria-valuenow");
-        // If ARIA is missing, we can't compare here—call getLeftPercent() in the test as fallback.
-        return before != null && after != null && !after.equals(before);
-    }
-
-    public void scroll(){
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("window.scrollBy(0, 550);");   // scroll down 500px
-    }
-
+    public void scroll()  { scrollBy(550); }
     public void display(){
+        waitVisible(tenureSpan);
+        waitVisible(aprValueSpan);
+        waitVisible(totalIntrestSpan);
+        waitVisible(totalAmountSpan);
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(tenureSpan));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(aprValueSpan));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(totalIntrestSpan));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(totalAmountSpan));
-
-// Read text
-        String emiAmountText     = driver.findElement(tenureSpan).getText();        // e.g., "8,207"
-        String aprText = driver.findElement(aprValueSpan).getText();    // e.g., "92,397"
-        String totalInterestText = driver.findElement(totalIntrestSpan).getText();    // e.g., "92,397"
-        String totalAmountText   = driver.findElement(totalAmountSpan).getText();
-        // e.g., "4,92,397"
-        System.out.println("Loan Tenure "+emiAmountText);
-        System.out.println("Loan APR "+ aprText);
-        System.out.println("Total Interest "+totalInterestText);
-        System.out.println("TotalAmount "+totalAmountText);
-
+        System.out.println("Loan Tenure "    + getText(tenureSpan));
+        System.out.println("Loan APR "       + getText(aprValueSpan));
+        System.out.println("Total Interest " + getText(totalIntrestSpan));
+        System.out.println("TotalAmount "    + getText(totalAmountSpan));
     }
-
 }

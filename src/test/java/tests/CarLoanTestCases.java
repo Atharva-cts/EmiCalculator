@@ -44,9 +44,9 @@ public class CarLoanTestCases extends BaseTest {
         // capture EMI before moving sliders
         String emiBefore = page.getEMI();
 
-        page.moveInterestSlider(110);
+        page.moveInterestSlider(100);
         System.out.println("TC02: Interest slider moved.");
-        page.moveTermSlider(200);
+        page.moveTermSlider(280);
         System.out.println("TC02: Loan tenure slider moved.");
         Thread.sleep(2000);
 
